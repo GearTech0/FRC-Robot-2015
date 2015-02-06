@@ -1,11 +1,4 @@
 package org.usfirst.frc.team108.robot;
-
-import com.ni.vision.NIVision;
-import com.ni.vision.NIVision.DrawMode;
-import com.ni.vision.NIVision.Image;
-import com.ni.vision.NIVision.ShapeMode;
-
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,9 +24,8 @@ public class Robot extends SampleRobot {
     PressureControl p;
     
     Drive108 drive;
+    Vision108 camera1, camera2;
 	
-    int session;
-    Image frame;
     
     public Robot() {
     	drive = new Drive108(5);
@@ -45,6 +37,9 @@ public class Robot extends SampleRobot {
         silk = new Thread();
         kirby = new Compressor();
         p = new PressureControl(controller);
+        
+        camera1 = new Vision108("cam0");
+        camera2 = new Vision108("cam1");
         
         kirby.start();
         
@@ -60,6 +55,8 @@ public class Robot extends SampleRobot {
         		drive.talonSet.get(1), 
         		drive.talonSet.get(2), 
         		drive.talonSet.get(3));
+        camera1.createCamera();
+        camera2.createCamera();
     }
     
     public void autonomous(){
@@ -75,34 +72,20 @@ public class Robot extends SampleRobot {
     	}
     	return;
     }
-        
-    public void robotInit() {
 
-        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-
-        // the camera name (ex "cam0") can be found through the roborio web interface
-        session = NIVision.IMAQdxOpenCamera("cam0",
-                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        NIVision.IMAQdxConfigureGrab(session);
-    }
 
     public void operatorControl() {
-        NIVision.IMAQdxStartAcquisition(session);
 
         /**
          * grab an image, draw the circle, and provide it for the camera server
          * which will in turn send it to the dashboard.
          */
-        NIVision.Rect rect = new NIVision.Rect(10, 10, 100, 100);
-
+    	camera1.start();
+    	camera2.start();
+    	
         while (isOperatorControl() && isEnabled()) {
-
-            NIVision.IMAQdxGrab(session, frame, 1);
-            NIVision.imaqDrawShapeOnImage(frame, frame, rect,
-                    DrawMode.DRAW_VALUE, ShapeMode.SHAPE_OVAL, 0.0f);
-            
-            CameraServer.getInstance().setImage(frame);
-
+        	camera1.initiateCamera();
+        	camera2.initiateCamera();
             /** robot code here! **/
             drive.Drive(myRobot, leftStick, rightStick);
         	p.Operate();
@@ -112,7 +95,9 @@ public class Robot extends SampleRobot {
             
             Timer.delay(0.005);		// wait for a motor update time
         }
-        NIVision.IMAQdxStopAcquisition(session);
+        
+        camera1.stop();
+        camera2.stop();
     }
 
     public void test() {

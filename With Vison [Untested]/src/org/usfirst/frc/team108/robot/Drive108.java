@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Drive108 {
-	ArrayList<VictorSP> talonSet = new ArrayList<>();
+	ArrayList<Talon> talonSet = new ArrayList<>();
 	
 	Drive108(int numTalon){
 		for(int i = 0; i < numTalon; i++)

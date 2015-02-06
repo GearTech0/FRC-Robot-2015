@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Talon;
 
 
 public class MagSwitch{
 	ArrayList <DigitalInput> Maggie = new ArrayList<>();
-	VictorSP a;
+	Talon a;
 	Joystick j;
 	
 	//Lifter position
@@ -43,7 +43,7 @@ public class MagSwitch{
 	 * --------------------------------------------------------
 	 * 
 	 * */
-	public void getPosition(VictorSP t, Joystick j){
+	public void getPosition(Talon t, Joystick j){
 		
 		//if button is pressed and pick up position is less than 1
 		
