@@ -90,7 +90,14 @@ public class Robot extends SampleRobot {
             drive.Drive(myRobot, leftStick, rightStick);
         	p.Operate();
             //Timer.delay(0.005);		// wait for a motor update time
-            Maggie.getPosition(drive.talonSet.get(4), controller);
+            if(controller.getRawButton(0)||controller.getRawButton(1)||controller.getRawButton(2)||controller.getRawButton(3)){
+            	p.open();
+            	Timer.delay(0.5);
+            	Maggie.getPosition(drive.talonSet.get(4), controller);
+            }//pneumatic cylinder for brake must go first(only cylinder-so far).
+            if(Maggie.a.get() == 0.0){		//not sure if i got syntax right in if statement.
+            	p.close();			//"a" stands for the talon/victor.
+            }
             //Maggie.start();
             
             Timer.delay(0.005);		// wait for a motor update time
