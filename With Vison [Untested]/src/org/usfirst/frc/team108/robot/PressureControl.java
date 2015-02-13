@@ -10,7 +10,7 @@ public class PressureControl {
 	
 	PressureControl(Joystick controller){
 		kirbyDouble = new DoubleSolenoid(1, 0);
-		kirbyDouble2 = new DoubleSolenoid(2, 3);
+		//kirbyDouble2 = new DoubleSolenoid(2, 3);
 		
 		this.controller = controller;
 	}
@@ -24,10 +24,10 @@ public class PressureControl {
 	
 	public void Open(){
 		kirbyDouble.set(Value.kForward);
-		kirbyDouble2.set(Value.kForward);
+		//kirbyDouble2.set(Value.kForward);
 	}
 	public void Close(){
 		kirbyDouble.set(Value.kReverse);
-		kirbyDouble2.set(Value.kReverse);
+		//kirbyDouble2.set(Value.kReverse);
 	}
 }
